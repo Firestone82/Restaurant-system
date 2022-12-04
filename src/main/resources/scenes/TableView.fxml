@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="form" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentationLayer.controller.list.TableViewController">
+    <Label layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="75.0" text="Logged:">
+      <font>
+         <Font name="SansSerif Regular" size="19.0" />
+      </font>
+    </Label>
+   <Label fx:id="userName" layoutX="89.0" layoutY="14.0" prefHeight="25.0" prefWidth="340.0" text="Username..">
+      <font>
+         <Font name="SansSerif Regular" size="19.0" />
+      </font>
+   </Label>
+   <TableView fx:id="tableView" layoutX="14.0" layoutY="51.0" prefHeight="537.0" prefWidth="267.0">
+     <columns>
+       <TableColumn fx:id="tableName" prefWidth="157.0" text="Table" />
+       <TableColumn fx:id="tableState" minWidth="0.0" prefWidth="87.0" text="Active" />
+     </columns>
+   </TableView>
+   <TableView fx:id="productView" layoutX="300.0" layoutY="109.0" prefHeight="479.0" prefWidth="586.0">
+      <columns>
+         <TableColumn fx:id="productName" prefWidth="412.0" text="Product" />
+         <TableColumn fx:id="productCount" minWidth="31.0" prefWidth="66.0" resizable="false" text="Count" />
+         <TableColumn fx:id="productTotal" minWidth="48.0" prefWidth="85.0" resizable="false" text="Total" />
+      </columns>
+   </TableView>
+   <Label fx:id="selectedTable" layoutX="300.0" layoutY="34.0" prefHeight="26.0" prefWidth="313.0">
+      <font>
+         <Font size="17.0" />
+      </font>
+   </Label>
+   <Button fx:id="logoutButton" layoutX="802.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutPress" prefHeight="33.0" prefWidth="84.0" styleClass="redButton" text="Logout" />
+   <Button fx:id="managerButton" layoutX="622.0" layoutY="14.0" mnemonicParsing="false" onAction="#managerPress" prefHeight="33.0" prefWidth="163.0" styleClass="blueButton" text="Manager Menu" />
+   <HBox layoutX="300.0" layoutY="66.0" prefHeight="33.0" prefWidth="586.0" spacing="20.0">
+      <children>
+         <Button fx:id="addTableButton" mnemonicParsing="false" onAction="#addTablePress" prefHeight="33.0" prefWidth="145.0" styleClass="greenButton" text="Add Table" />
+         <Button fx:id="deleteTableButton" mnemonicParsing="false" onAction="#deleteTablePress" prefHeight="33.0" prefWidth="145.0" styleClass="redButton" text="Delete Table" />
+          <Button fx:id="addButton" mnemonicParsing="false" onAction="#addPress" prefHeight="33.0" prefWidth="145.0" styleClass="greenButton" text="Add Product" />
+          <Button fx:id="payButton" mnemonicParsing="false" onAction="#payPress" prefHeight="33.0" prefWidth="145.0" styleClass="orangeButton" text="Payment" />
+      </children>
+   </HBox>
+</AnchorPane>
