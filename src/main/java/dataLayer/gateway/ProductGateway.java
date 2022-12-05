@@ -16,7 +16,7 @@ public class ProductGateway {
     }
 
     public static ResultSet getAllProducts() {
-        String sql = "SELECT * FROM Product";
+        String sql = "SELECT * FROM Product ORDER BY name";
 
         try {
             Connection connection = SQLDatabase.getConnection();
@@ -44,6 +44,48 @@ public class ProductGateway {
         }
 
         return null;
+    }
+
+    public static void increaseProductIDStock(int productID, int count) {
+        String sql = "UPDATE Product SET count = count + ? WHERE productID = ?";
+
+        try (Connection connection = SQLDatabase.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, count);
+                statement.setInt(2, productID);
+                statement.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void decreaseProductIDStock(int productID, int count) {
+        String sql = "UPDATE Product SET count = count - ? WHERE productID = ?";
+
+        try (Connection connection = SQLDatabase.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, count);
+                statement.setInt(2, productID);
+                statement.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setProductIDStock(int productID, int count) {
+        String sql = "UPDATE Product SET count = ? WHERE productID = ?";
+
+        try (Connection connection = SQLDatabase.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, count);
+                statement.setInt(2, productID);
+                statement.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static ResultSet getProductsByTableID(int tableID) {

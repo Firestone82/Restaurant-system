@@ -1,16 +1,27 @@
 package presentationLayer;
 
+import bussinessLayer.objects.Employee;
+import bussinessLayer.services.OrderService;
+import bussinessLayer.services.ProductService;
+import bussinessLayer.services.TableService;
+import dataLayer.connection.IDatabase;
 import dataLayer.connection.SQLDatabase;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import presentationLayer.controller.MainController;
+import presentationLayer.controller.Controller;
 import presentationLayer.enums.SceneType;
 
 public class App extends Application {
-
-	private MainController mainController;
+	private Controller controller;
 	private Stage primaryStage;
+
+	private final IDatabase database = new SQLDatabase();
+	private final ProductService productService = new ProductService();
+	private final OrderService orderService = new OrderService();
+	private final TableService tableService = new TableService();
+
+	private Employee employee = new Employee(-1,"Administrator");
 
 	public static void main(String[] args) {
 		launch(args);
@@ -21,33 +32,46 @@ public class App extends Application {
 		this.primaryStage = primaryStage;
 
 		try {
-			mainController = new MainController(this, primaryStage);
-			mainController.changeScene(SceneType.LOGIN);
+			controller = new Controller(this, primaryStage);
+			controller.changeScene(SceneType.LOGIN);
 
 			primaryStage.resizableProperty().set(false);
-//			primaryStage.getIcons().add(Source.ICON.getImage());
 			primaryStage.setOnCloseRequest(this::exitProgram);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		SQLDatabase db = new SQLDatabase();
 	}
 	
 	private void exitProgram(WindowEvent evt) {
 		System.exit(0);
 	}
 
-	public MainController getMainController() {
-		return mainController;
+	public Controller getController() {
+		return controller;
 	}
 
-	public Stage getPrimaryStage() {
-		return primaryStage;
+	public Employee getEmployee() {
+		return employee;
 	}
 
-	public String getResourcePath() {
-		return "src/main/resources";
+	public OrderService getOrderService() {
+		return orderService;
+	}
+
+	public ProductService getProductService() {
+		return productService;
+	}
+
+	public TableService getTableService() {
+		return tableService;
+	}
+
+	public IDatabase getDatabase() {
+		return database;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 }

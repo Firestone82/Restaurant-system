@@ -80,6 +80,6 @@ public class Employee {
 
     @Override
     public String toString() {
-        return firstName.get() +" "+ lastName.get() +" ("+ position +")";
+        return firstName.get() +" "+ lastName.get();
     }
 }

@@ -3,7 +3,7 @@ package dataLayer.connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class SQLDatabase {
+public class SQLDatabase implements IDatabase {
     private static final String connectionString =
             "jdbc:sqlserver://dbsys.cs.vsb.cz\\sqldb;" +
             "databaseName=MIK0486;" +

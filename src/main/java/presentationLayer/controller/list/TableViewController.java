@@ -1,6 +1,6 @@
 package presentationLayer.controller.list;
 
-import bussinessLayer.objects.Order;
+import bussinessLayer.objects.Employee;
 import bussinessLayer.objects.Product;
 import bussinessLayer.objects.Table;
 import bussinessLayer.services.OrderService;
@@ -8,25 +8,18 @@ import bussinessLayer.services.ProductService;
 import bussinessLayer.services.TableService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import presentationLayer.App;
+import presentationLayer.controller.AbstractController;
 import presentationLayer.enums.SceneType;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.Thread.sleep;
-
-public class TableViewController {
-    private App app;
-    private Pane pane;
-    private Scene scene;
-
+public class TableViewController extends AbstractController {
     @FXML Label selectedTable;
     @FXML Label userName;
+
+    @FXML Button managerButton;
 
     @FXML TableView<Table> tableView;
     @FXML TableColumn<Table, String> tableName;
@@ -37,16 +30,7 @@ public class TableViewController {
     @FXML TableColumn<Product, Integer> productCount;
     @FXML TableColumn<Product, Double> productTotal;
 
-    private final TableService tableService = new TableService();
-    private final OrderService orderService = new OrderService();
-    private final ProductService productService = new ProductService();
-
-    public void init(App app, Pane pane) {
-        this.app = app;
-        this.pane = pane;
-        this.scene = new Scene(pane);
-        this.scene.getStylesheets().add(getClass().getResource("/assets/application.css").toExternalForm());
-
+    public void initComponents() {
         this.tableName.setCellFactory(tc -> {
             TableCell<Table, String> cell = new TableCell<>() {
                 @Override
@@ -57,12 +41,7 @@ public class TableViewController {
             };
 
             cell.setOnMouseClicked(e -> {
-                if (cell.getItem() == null) return;
-
-                selectedTable.setText("Loading table ...");
-                System.out.println("Loading " + cell.getItem() + "...");
-
-                loadTable(Integer.parseInt(cell.getItem().split("\\.")[1]));
+                if (cell.getItem() != null) load(Integer.parseInt(cell.getItem().split("\\.")[1]));
             });
 
             return cell;
@@ -73,26 +52,26 @@ public class TableViewController {
         this.productName.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.productCount.setCellValueFactory(new PropertyValueFactory<>("count"));
         this.productTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
-
-        loadTables();
-        loadValues("Administrator");
     }
 
-    public void loadValues(String userName) {
-        this.userName.setText(userName);
+    public void loadValues(String... args) {
+        this.userName.setText(app.getEmployee().toString());
 
         if (!selectedTable.getText().isEmpty()) {
-            loadTable(Integer.parseInt(selectedTable.getText().split("\\.")[1]));
+            load(Integer.parseInt(selectedTable.getText().split("\\.")[1]));
+        } else {
+            load();
         }
     }
 
-    public void loadTables() {
-        tableView.setItems(FXCollections.observableArrayList(new TableService().getAllTables()));
+    public void load() {
+        tableView.setItems(FXCollections.observableArrayList(app.getTableService().getAllTables()));
     }
 
-    public void loadTable(Integer tableID) {
-        selectedTable.setText("Products ordered on table n." + tableID);
-        productView.setItems(FXCollections.observableArrayList(productService.getProductsFromTable(tableID)));
+    public void load(Integer tableID) {
+        load();
+        selectedTable.setText("Selected table n." + tableID);
+        productView.setItems(FXCollections.observableArrayList(app.getProductService().getProductsFromTable(tableID)));
     }
 
     @FXML
@@ -110,18 +89,25 @@ public class TableViewController {
             return;
         }
 
-        app.getMainController().changeScene(SceneType.ADD, selectedTable.getText().split("\\.")[1]);
+        app.getController().changeScene(SceneType.ADD, selectedTable.getText().split("\\.")[1]);
     }
 
     @FXML
     public void managerPress() {
-
+        if (true || app.getEmployee().getPosition() == Employee.Type.MANAGER || app.getEmployee().getPosition() == Employee.Type.MAJITEL) {
+            app.getController().changeScene(SceneType.EDIT);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("You don't have permission to access this page");
+            alert.showAndWait();
+        }
     }
 
     @FXML
     public void addTablePress() {
-        tableService.insertTable();
-        loadTables();
+        app.getTableService().insertTable();
+        load();
     }
 
     @FXML
@@ -137,17 +123,12 @@ public class TableViewController {
         new TableService().removeTable(Integer.parseInt(selectedTable.getText().split("\\.")[1]));
         productView.setItems(FXCollections.observableArrayList());
         selectedTable.setText("");
-        loadTables();
+        load();
     }
 
     @FXML
     public void logoutPress() {
-        app.getMainController().changeScene(SceneType.LOGIN);
-        app.getMainController().setEmployee(null);
+        app.getController().changeScene(SceneType.LOGIN);
         userName.setText("");
-    }
-
-    public Scene getScene() {
-        return scene;
     }
 }

@@ -23,6 +23,18 @@ public class ProductService {
         return products;
     }
 
+    public void insertProductStock(int productID, int count) {
+        ProductGateway.increaseProductIDStock(productID, count);
+    }
+
+    public void setProductStock(int productID, int count) {
+        ProductGateway.setProductIDStock(productID, count);
+    }
+
+    public void removeProductStock(int productID, int count) {
+        ProductGateway.decreaseProductIDStock(productID, count);
+    }
+
     public List<Product> getProductsFromOrder(Integer orderID) {
         List<Product> products = new ArrayList<>();
 

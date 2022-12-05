@@ -4,9 +4,9 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class SqLiteDatabase {
-    private final String connectionString;
-    private final File file;
+public class SqLiteDatabase implements IDatabase {
+    private static String connectionString;
+    private static File file;
 
     public SqLiteDatabase(String path) {
         this.file = new File("src/main/resources"+ path);
@@ -22,7 +22,7 @@ public class SqLiteDatabase {
         this.connectionString = "jdbc:sqlite:" + file.getPath();
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
             return DriverManager.getConnection(connectionString);

@@ -3,28 +3,19 @@ package presentationLayer.controller.list;
 import bussinessLayer.objects.Employee;
 import bussinessLayer.scripts.LoginScript;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.util.Pair;
-import presentationLayer.App;
+import presentationLayer.controller.AbstractController;
 import presentationLayer.enums.SceneType;
 
-public class LoginController {
-    private App app;
-    private Pane pane;
-    private Scene scene;
-
+public class LoginController extends AbstractController {
     @FXML TextField employeeID;
     @FXML TextField employeePassword;
 
-    public void init(App app, Pane pane) {
-        this.app = app;
-        this.pane = pane;
+    @Override
+    public void initComponents() {
 
-        this.scene = new Scene(pane);
-        this.scene.getStylesheets().add(getClass().getResource("/assets/application.css").toExternalForm());
     }
 
     @FXML
@@ -38,8 +29,8 @@ public class LoginController {
         Pair<Boolean, Employee> result = loginScript.processLogin(employeeID.getText(), employeePassword.getText());
 
         if (result.getKey()) {
-            app.getMainController().setEmployee(result.getValue());
-            app.getMainController().changeScene(SceneType.TABLEVIEW);
+            app.setEmployee(result.getValue());
+            app.getController().changeScene(SceneType.TABLEVIEW);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -49,7 +40,10 @@ public class LoginController {
         }
     }
 
-    public Scene getScene() {
-        return scene;
+    @Override
+    public void loadValues(String... args) {
+        app.setEmployee(null);
+        employeeID.setText("");
+        employeePassword.setText("");
     }
 }

@@ -6,21 +6,21 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import presentationLayer.App;
 import presentationLayer.controller.list.LoginController;
+import presentationLayer.controller.list.ProductViewController;
 import presentationLayer.controller.list.TableOrdersController;
 import presentationLayer.controller.list.TableViewController;
 import presentationLayer.enums.SceneType;
 
-public class MainController {
+public class Controller {
     private final App app;
     private final Stage primaryStage;
 
     private LoginController loginController;
     private TableViewController tableViewController;
     private TableOrdersController tableOrdersController;
+    private ProductViewController productViewController;
 
-    private Employee employee = new Employee(-1,"Administrator");
-
-    public MainController(App app, Stage primaryStage) {
+    public Controller(App app, Stage primaryStage) {
         this.app = app;
         this.primaryStage = primaryStage;
 
@@ -36,35 +36,40 @@ public class MainController {
             tableViewController.init(app, tableViewPane);
 
             FXMLLoader tableOrdersLoader = new FXMLLoader(App.class.getResource(SceneType.ADD.getFXML()));
-            Pane tableOrdersView = tableOrdersLoader.load();
+            Pane tableOrdersViewPane = tableOrdersLoader.load();
             tableOrdersController = tableOrdersLoader.getController();
-            tableOrdersController.init(app, tableOrdersView);
+            tableOrdersController.init(app, tableOrdersViewPane);
+
+            FXMLLoader productViewLoader = new FXMLLoader(App.class.getResource(SceneType.EDIT.getFXML()));
+            Pane productViewPane = productViewLoader.load();
+            productViewController = productViewLoader.getController();
+            productViewController.init(app, productViewPane);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void setEmployee(Employee employee) {
-    	this.employee = employee;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
     public void changeScene(SceneType type, String ...values) {
         try {
             switch (type) {
-                case LOGIN -> primaryStage.setScene(loginController.getScene());
+                case LOGIN -> {
+                    primaryStage.setScene(loginController.getScene());
+                    loginController.loadValues();
+                }
 
                 case TABLEVIEW ->  {
                     primaryStage.setScene(tableViewController.getScene());
-                    tableViewController.loadValues(employee.toString());
+                    tableViewController.loadValues();
                 }
 
                 case ADD -> {
                     primaryStage.setScene(tableOrdersController.getScene());
-                    tableOrdersController.loadValues(employee.toString(),"Table n."+ values[0]);
+                    tableOrdersController.loadValues("Table n."+ values[0]);
+                }
+
+                case EDIT -> {
+                    primaryStage.setScene(productViewController.getScene());
+                    productViewController.loadValues();
                 }
             }
 

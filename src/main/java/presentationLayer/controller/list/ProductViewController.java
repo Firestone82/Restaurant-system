@@ -4,21 +4,14 @@ import bussinessLayer.objects.Product;
 import bussinessLayer.services.ProductService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
-import presentationLayer.App;
+import presentationLayer.controller.AbstractController;
 import presentationLayer.enums.SceneType;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ProductViewController {
-    private App app;
-    private Pane pane;
-    private Scene scene;
-
+public class ProductViewController extends AbstractController {
     private @FXML Label userName;
 
     private @FXML ComboBox<Product> productAddName;
@@ -29,28 +22,12 @@ public class ProductViewController {
     private @FXML TableColumn<Product, String> productType;
     private @FXML TableColumn<Product, Integer> productCount;
 
-    private final ProductService orderService = new ProductService();
-
-    public void init(App app, Pane pane) {
-        this.app = app;
-        this.pane = pane;
-        this.scene = new Scene(pane);
-        this.scene.getStylesheets().add(getClass().getResource("/assets/application.css").toExternalForm());
-
+    public void initComponents() {
         this.productName.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.productType.setCellValueFactory(new PropertyValueFactory<>("type"));
         this.productCount.setCellValueFactory(new PropertyValueFactory<>("count"));
 
-        load();
-    }
-
-    public void loadValues(String userName) {
-        this.userName.setText(userName);
-        load();
-    }
-
-    public void load() {
-        productAddName.setItems(FXCollections.observableArrayList(ProductService.getAllProducts()));
+        productAddCount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,500,1));
         productAddName.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Product item, boolean empty) {
@@ -65,39 +42,45 @@ public class ProductViewController {
                 setText(empty ? "" : item.getName());
             }
         });
-        productAddCount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,500,1));
-        productView.setItems(FXCollections.observableArrayList(new ArrayList<>()));
+    }
+
+    public void loadValues(String... args) {
+        this.userName.setText(app.getEmployee().toString());
+        load();
+    }
+
+    public void load() {
+        productAddName.setItems(FXCollections.observableArrayList(ProductService.getAllProducts()));
+        productView.setItems(FXCollections.observableArrayList(ProductService.getAllProducts()));
     }
 
     @FXML
     public void addPress() {
+        Product selectedProduct = productAddName.getItems().stream().filter(p -> p.getName().equals(productAddName.getValue().getName())).findFirst().get();
+        int selectedCount = productAddCount.getValue();
 
+        app.getProductService().insertProductStock(selectedProduct.getID(), selectedCount);
+
+        load();
     }
 
     @FXML
     public void removePress() {
+        Product selectedProduct = productAddName.getItems().stream().filter(p -> p.getName().equals(productAddName.getValue().getName())).findFirst().get();
+        int selectedCount = productAddCount.getValue();
 
-    }
+        if (selectedProduct.getCount() - selectedCount < 0) {
+            app.getProductService().setProductStock(selectedProduct.getID(), 0);
+        } else {
+            app.getProductService().removeProductStock(selectedProduct.getID(), selectedCount);
+        }
 
-    @FXML
-    public void finishPress() {
-//        System.out.println("Finishing order n."+ order.getID());
-//
-//        for (Product product : productView.getItems()) {
-//            orderService.insertOrderProduct(order.getID(), product.getID(), product.getCount());
-//        }
-//
-//        backPress();
+        load();
     }
 
     @FXML
     public void backPress() {
-//        app.getMainController().changeScene(SceneType.TABLEVIEW);
-//        userName.setText("");
-//        selectedTable.setText("");
-    }
-
-    public Scene getScene() {
-        return scene;
+        app.getController().changeScene(SceneType.TABLEVIEW);
+        userName.setText("");
     }
 }
