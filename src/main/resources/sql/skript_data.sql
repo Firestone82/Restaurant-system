@@ -253,6 +253,8 @@ INSERT INTO Employee (employeeID, firstName, lastName, address, phone, birthDate
 INSERT INTO Employee (employeeID, firstName, lastName, address, phone, birthDate, start, [end], position, password) VALUES (48, 'Myrtie', 'Pahlsson', '5 Hoepker Plaza', '6166607774', '2005-04-15 06:37:09', '2015-10-19 22:06:22', '2015-03-16 23:13:58', 'Zamestnanec', 'eFZZcmd2U09tbw==');
 INSERT INTO Employee (employeeID, firstName, lastName, address, phone, birthDate, start, [end], position, password) VALUES (49, 'Myrle', 'Dark', '34001 Derek Circle', '6823953019', '2006-10-20 11:06:45', '2012-12-02 10:00:19', null, 'Zamestnanec', 'OTFVck1u');
 INSERT INTO Employee (employeeID, firstName, lastName, address, phone, birthDate, start, [end], position, password) VALUES (50, 'Lucas', 'Scandroot', '4 Gale Junction', '4065839065', '2004-01-23 03:34:13', '2014-01-02 01:27:51', null, 'Zamestnanec', 'ZURxNE5HR0k=');
+INSERT INTO Employee (employeeID, firstName, lastName, address, phone, birthDate, start, [end], position, password) VALUES (51, 'Karlik', 'Brambora', '4 Gale Junction', '4065839065', '2004-01-23 03:34:13', '2014-01-02 01:27:51', null, 'Majitel', '94670329');
+INSERT INTO Employee (employeeID, firstName, lastName, address, phone, birthDate, start, [end], position, password) VALUES (52, 'Jozko', 'Mrkvicka', '4 Gale Junction', '4065839065', '2004-01-23 03:34:13', '2014-01-02 01:27:51', null, 'Zamestnanec', '94670329');
 SET IDENTITY_INSERT Employee OFF;
 
 SET IDENTITY_INSERT Payment ON;
