@@ -2,7 +2,6 @@ package presentationLayer.controller.list;
 
 import bussinessLayer.objects.Order;
 import bussinessLayer.objects.Product;
-import bussinessLayer.services.OrderService;
 import bussinessLayer.services.ProductService;
 import dataLayer.unitOfWork.OrderProductUOF;
 import javafx.collections.FXCollections;
@@ -29,7 +28,6 @@ public class TableOrdersController extends AbstractController {
     private @FXML TableColumn<Product, Integer> productCount;
     private @FXML TableColumn<Product, Double> productTotal;
 
-    private final OrderService orderService = new OrderService();
     private Order order;
 
     public void initComponents() {
@@ -38,7 +36,7 @@ public class TableOrdersController extends AbstractController {
         this.productCount.setCellValueFactory(new PropertyValueFactory<>("count"));
         this.productTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
 
-        productAddCount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,500,1));
+        productAddCount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 500, 1));
         productAddName.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Product item, boolean empty) {
@@ -62,7 +60,7 @@ public class TableOrdersController extends AbstractController {
         this.productView.getItems().clear();
         this.productAddCount.decrement(Integer.MAX_VALUE);
         this.productAddName.getSelectionModel().clearSelection();
-        this.order = orderService.insertOrder(Integer.parseInt(args[0].split("\\.")[1]), app.getEmployee().getEmployeeID());
+        this.order = app.getOrderService().insertOrder(Integer.parseInt(args[0].split("\\.")[1]), app.getEmployee().getEmployeeID());
 
         load();
     }
@@ -89,15 +87,17 @@ public class TableOrdersController extends AbstractController {
         }
 
         for (Product product : productView.getItems()) {
-            if (product == selectedProduct) {
+            if (product.getID() == selectedProduct.getID()) {
                 product.setCount(product.getCount() + selectedCount);
                 productView.refresh();
                 return;
             }
         }
 
-        selectedProduct.setCount(selectedCount);
-        productView.getItems().add(selectedProduct);
+
+        Product productCopy = new Product(selectedProduct);
+        productCopy.setCount(selectedCount);
+        productView.getItems().add(productCopy);
     }
 
     @FXML
@@ -128,7 +128,7 @@ public class TableOrdersController extends AbstractController {
         Alert alert = new Alert(
                 Alert.AlertType.WARNING,
                 "Did you verify if order is correct?", no, yes);
-        alert.setHeaderText("Verification"+ selectedTable.getText().split("\\.")[1]);
+        alert.setHeaderText("Verification" + selectedTable.getText().split("\\.")[1]);
         alert.setTitle("Order Confirmation");
 
         Optional<ButtonType> result = alert.showAndWait();

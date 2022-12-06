@@ -4,12 +4,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Employee {
-    public enum Type {
-        ZAMESTNANEC,
-        MANAGER,
-        MAJITEL
-    }
-
     private final SimpleIntegerProperty employeeID;
     private final SimpleStringProperty firstName;
     private final SimpleStringProperty lastName;
@@ -20,12 +14,11 @@ public class Employee {
     private final SimpleStringProperty endDate;
     private final Type position;
     private final SimpleStringProperty password;
-
-    public Employee(Integer employeeID, String firstName) {
-        this(employeeID, firstName,"",null,null,null,null,null,null,null);
+    public Employee(int employeeID, String firstName) {
+        this(employeeID, firstName, "", null, null, null, null, null, null, null);
     }
 
-    public Employee(Integer employeeID, String firstName, String lastName, String address, String phoneNumber, String birthDate, String startDate, String endDate, Type position, String password) {
+    public Employee(int employeeID, String firstName, String lastName, String address, String phoneNumber, String birthDate, String startDate, String endDate, Type position, String password) {
         this.employeeID = new SimpleIntegerProperty(employeeID);
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
@@ -38,7 +31,7 @@ public class Employee {
         this.password = new SimpleStringProperty(password);
     }
 
-    public Integer getEmployeeID() {
+    public int getEmployeeID() {
         return employeeID.get();
     }
 
@@ -80,6 +73,12 @@ public class Employee {
 
     @Override
     public String toString() {
-        return firstName.get() +" "+ lastName.get() +" ["+ position.name().charAt(0) +"]";
+        return firstName.get() + " " + lastName.get() + " [" + position.name().charAt(0) + "]";
+    }
+
+    public enum Type {
+        ZAMESTNANEC,
+        MANAGER,
+        MAJITEL
     }
 }

@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class EmployeeGateway {
-    public static ResultSet getEmployeeByID(Integer employeeID) {
+    public static ResultSet getEmployeeByID(int employeeID) {
         String sql = "SELECT * FROM Employee WHERE employeeID = ?";
 
         try {

@@ -5,18 +5,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Product implements Cloneable {
-    public enum Type {
-        FOOD,
-        DRINK
-    }
-
     private final SimpleIntegerProperty productID;
     private final Type type;
     private final SimpleStringProperty name;
     private final SimpleIntegerProperty count;
     private final SimpleDoubleProperty price;
 
-    public Product(Integer productID, Type productType, String productName, Integer count, Double price) {
+    public Product(int productID, Type productType, String productName, int count, double price) {
         this.productID = new SimpleIntegerProperty(productID);
         this.name = new SimpleStringProperty(productName);
         this.count = new SimpleIntegerProperty(count);
@@ -28,7 +23,7 @@ public class Product implements Cloneable {
         this.productID = new SimpleIntegerProperty(cloneProduct.getID());
         this.name = new SimpleStringProperty(cloneProduct.getName());
         this.count = new SimpleIntegerProperty(cloneProduct.getCount());
-        this.price = new SimpleDoubleProperty(cloneProduct.getTotal());
+        this.price = new SimpleDoubleProperty(cloneProduct.getPrice());
         this.type = cloneProduct.getType();
     }
 
@@ -44,15 +39,19 @@ public class Product implements Cloneable {
         return name.get();
     }
 
-    public Integer getCount() {
+    public int getCount() {
         return count.get();
     }
 
-    public void setCount(Integer count) {
+    public double getPrice() {
+        return price.get();
+    }
+
+    public void setCount(int count) {
         this.count.set(count);
     }
 
-    public Double getTotal() {
+    public double getTotal() {
         return price.get() * count.get();
     }
 
@@ -65,5 +64,10 @@ public class Product implements Cloneable {
         }
 
         return null;
+    }
+
+    public enum Type {
+        FOOD,
+        DRINK
     }
 }

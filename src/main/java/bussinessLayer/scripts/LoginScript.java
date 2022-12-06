@@ -12,17 +12,17 @@ public class LoginScript {
         try {
             id = Integer.parseInt(employeeID);
         } catch (Exception e) {
-            return new Pair<>(false,null);
+            return new Pair<>(false, null);
         }
 
         Employee employee = EmployeeMapper.map(EmployeeGateway.getEmployeeByID(id));
         if (employee != null) {
             String currentPass = employee.getPassword();
-            String hashedPass = password.hashCode() +"";
+            String hashedPass = password.hashCode() + "";
 
             return new Pair<>(currentPass.equals(hashedPass), employee);
         }
 
-        return new Pair<>(false,null);
+        return new Pair<>(false, null);
     }
 }

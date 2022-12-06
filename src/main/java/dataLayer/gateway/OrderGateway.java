@@ -1,6 +1,7 @@
 package dataLayer.gateway;
 
 import dataLayer.connection.SQLDatabase;
+import dataLayer.connection.SQLDatabase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +10,7 @@ import java.sql.Statement;
 
 public class OrderGateway {
 
-    public static ResultSet insertTableOrder(Integer employeeID, Integer tableID) {
+    public static ResultSet insertTableOrder(int employeeID, int tableID) {
         String sql = "INSERT INTO [Order] (created, employeeID) VALUES (CURRENT_TIMESTAMP, ?)";
 
         try {
@@ -27,7 +28,7 @@ public class OrderGateway {
         return null;
     }
 
-    public static void assignOrderProduct(int orderID, int productID, Integer count) {
+    public static void assignOrderProduct(int orderID, int productID, int count) {
         String sql = "INSERT INTO OrderProducts (orderID, productID, count) VALUES (?, ?, ?)";
 
         try (Connection connection = SQLDatabase.getConnection()) {
@@ -42,7 +43,36 @@ public class OrderGateway {
         }
     }
 
-    public static ResultSet getOrderByOrderID(Integer orderID) {
+    public static void removeOrderProduct(int orderID, int productID, int count) {
+        String sql = "UPDATE OrderProducts SET count = ? WHERE orderID = ? AND productID = ?";
+
+        try (Connection connection = SQLDatabase.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, count);
+                statement.setInt(2, orderID);
+                statement.setInt(3, productID);
+                statement.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteOrderProduct(int orderID, int productID) {
+        String sql = "DELETE FROM OrderProducts WHERE orderID = ? AND productID = ?";
+
+        try (Connection connection = SQLDatabase.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, orderID);
+                statement.setInt(2, productID);
+                statement.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ResultSet getOrderByOrderID(int orderID) {
         String sql = "SELECT * FROM [Order] WHERE orderID = ?";
 
         try {
@@ -58,7 +88,7 @@ public class OrderGateway {
         return null;
     }
 
-    public static ResultSet getOrdersByTableID(Integer tableID) {
+    public static ResultSet getOrdersByTableID(int tableID) {
         String sql = "" +
                 "SELECT tableID, t.orderID, created, employeeID, paymentID " +
                 "FROM TableOrders t " +

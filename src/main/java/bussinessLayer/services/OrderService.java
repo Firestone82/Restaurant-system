@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderService {
-    public Order insertOrder(Integer tableID, Integer employeeID) {
+    public Order insertOrder(int tableID, int employeeID) {
         try (ResultSet rs = OrderGateway.insertTableOrder(employeeID, tableID)) {
 
             if (rs.next()) {
@@ -30,11 +30,19 @@ public class OrderService {
         return null;
     }
 
-    public void insertOrderProduct(Integer orderID, Integer productID, Integer quantity) {
+    public void insertOrderProduct(int orderID, int productID, int quantity) {
         OrderGateway.assignOrderProduct(orderID, productID, quantity);
     }
 
-    public List<Order> getTableOrders(Integer tableID) {
+    public void removeOrderProduct(int orderID, int productID, int quantity) {
+        OrderGateway.removeOrderProduct(orderID, productID, quantity);
+    }
+
+    public void deleteOrderProduct(int orderID, int productID) {
+        OrderGateway.deleteOrderProduct(orderID, productID);
+    }
+
+    public List<Order> getTableOrders(int tableID) {
         List<Order> orders = new ArrayList<>();
 
         try (ResultSet resultSet = OrderGateway.getOrdersByTableID(tableID)) {

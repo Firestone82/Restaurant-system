@@ -20,7 +20,7 @@ public class TableGateway {
         }
     }
 
-    public static void assignTableOrder(Integer tableID, Integer orderID) {
+    public static void assignTableOrder(int tableID, int orderID) {
         String sql = "INSERT INTO TableOrders (tableID, orderID) VALUES (?, ?)";
 
         try (Connection connection = SQLDatabase.getConnection()) {
