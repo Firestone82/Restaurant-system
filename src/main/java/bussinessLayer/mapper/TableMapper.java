@@ -9,7 +9,7 @@ public class TableMapper {
         try {
             return new Table(
                     rs.getInt("tableID"),
-                    rs.getBoolean("occupied")
+                    rs.getBoolean("reserved")
             );
         } catch (Exception e) {
             e.printStackTrace();

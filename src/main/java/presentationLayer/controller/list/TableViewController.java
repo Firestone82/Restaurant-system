@@ -15,6 +15,8 @@ import presentationLayer.App;
 import presentationLayer.controller.AbstractController;
 import presentationLayer.enums.SceneType;
 
+import java.util.Optional;
+
 public class TableViewController extends AbstractController {
     @FXML Label selectedTable;
     @FXML Label userName;
@@ -31,27 +33,28 @@ public class TableViewController extends AbstractController {
     @FXML TableColumn<Product, Double> productTotal;
 
     public void initComponents() {
-        this.tableName.setCellFactory(tc -> {
-            TableCell<Table, String> cell = new TableCell<>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty) ;
-                    setText(empty ? null : item);
-                }
-            };
-
-            cell.setOnMouseClicked(e -> {
-                if (cell.getItem() != null) load(Integer.parseInt(cell.getItem().split("\\.")[1]));
-            });
-
-            return cell;
-        });
         this.tableName.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.tableState.setCellValueFactory(new PropertyValueFactory<>("state"));
 
         this.productName.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.productCount.setCellValueFactory(new PropertyValueFactory<>("count"));
         this.productTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        this.tableView.setRowFactory(tc -> {
+            TableRow<Table> row = new TableRow<>();
+
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty()) {
+                    Table table = row.getItem();
+
+                    if (table != null) {
+                        load(table.getTableID());
+                    }
+                }
+            });
+
+            return row;
+        });
     }
 
     public void loadValues(String... args) {
@@ -76,11 +79,11 @@ public class TableViewController extends AbstractController {
 
     @FXML
     public void payPress() {
-
+        app.getController().changeScene(SceneType.PAY, selectedTable.getText().split("\\.")[1]);
     }
 
     @FXML
-    public void addPress() {
+    public void orderPress() {
         if (selectedTable.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -120,10 +123,21 @@ public class TableViewController extends AbstractController {
             return;
         }
 
-        new TableService().removeTable(Integer.parseInt(selectedTable.getText().split("\\.")[1]));
-        productView.setItems(FXCollections.observableArrayList());
-        selectedTable.setText("");
-        load();
+        ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+        ButtonType no = new ButtonType("No! Its mistake!", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(
+                Alert.AlertType.WARNING,
+                "Opravdu chceš smazat tento stůl?", no, yes);
+        alert.setHeaderText("Table removal n."+ selectedTable.getText().split("\\.")[1]);
+        alert.setTitle("Table Removal confirmation.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.orElse(no) == yes) {
+            new TableService().removeTable(Integer.parseInt(selectedTable.getText().split("\\.")[1]));
+            productView.setItems(FXCollections.observableArrayList());
+            selectedTable.setText("");
+            load();
+        }
     }
 
     @FXML

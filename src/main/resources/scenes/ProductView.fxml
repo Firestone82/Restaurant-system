@@ -24,7 +24,7 @@
       <columns>
          <TableColumn fx:id="productName" prefWidth="627.0" text="Product" />
          <TableColumn fx:id="productType" prefWidth="105.0" text="Type" />
-         <TableColumn fx:id="productCount" minWidth="31.0" prefWidth="117.0" resizable="false" text="Count" />
+         <TableColumn id="rowRight" fx:id="productCount" minWidth="31.0" prefWidth="117.0" resizable="false" text="Count" />
       </columns>
    </TableView>
    <Button fx:id="backButton" layoutX="802.0" layoutY="14.0" mnemonicParsing="false" onAction="#backPress" prefHeight="33.0" prefWidth="84.0" styleClass="orangeButton" text="Back" />

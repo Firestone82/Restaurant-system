@@ -111,6 +111,14 @@
     -fx-font-size: 13pt !important;
 }
 
+#rowCenter {
+    -fx-alignment: center;
+}
+
+#rowRight {
+    -fx-alignment: center-right;
+}
+
 .table-view {
     -fx-accent: #23282a;
     -fx-focus-color: -fx-accent;

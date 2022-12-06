@@ -5,10 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import presentationLayer.App;
-import presentationLayer.controller.list.LoginController;
-import presentationLayer.controller.list.ProductViewController;
-import presentationLayer.controller.list.TableOrdersController;
-import presentationLayer.controller.list.TableViewController;
+import presentationLayer.controller.list.*;
 import presentationLayer.enums.SceneType;
 
 public class Controller {
@@ -19,6 +16,7 @@ public class Controller {
     private TableViewController tableViewController;
     private TableOrdersController tableOrdersController;
     private ProductViewController productViewController;
+    private OrderPaymentController orderPaymentController;
 
     public Controller(App app, Stage primaryStage) {
         this.app = app;
@@ -44,6 +42,11 @@ public class Controller {
             Pane productViewPane = productViewLoader.load();
             productViewController = productViewLoader.getController();
             productViewController.init(app, productViewPane);
+
+            FXMLLoader orderPaymentLoader = new FXMLLoader(App.class.getResource(SceneType.PAY.getFXML()));
+            Pane orderPaymentViewPane = orderPaymentLoader.load();
+            orderPaymentController = orderPaymentLoader.getController();
+            orderPaymentController.init(app, orderPaymentViewPane);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,6 +73,11 @@ public class Controller {
                 case EDIT -> {
                     primaryStage.setScene(productViewController.getScene());
                     productViewController.loadValues();
+                }
+
+                case PAY -> {
+                    primaryStage.setScene(orderPaymentController.getScene());
+                    orderPaymentController.loadValues("Table n."+ values[0]);
                 }
             }
 

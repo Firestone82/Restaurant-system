@@ -14,6 +14,7 @@ import presentationLayer.enums.SceneType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TableOrdersController extends AbstractController {
     private @FXML Label selectedTable;
@@ -122,12 +123,23 @@ public class TableOrdersController extends AbstractController {
     public void finishPress() {
         OrderProductUOF orderProductUOF = new OrderProductUOF(order.getID());
 
-        for (Product product : productView.getItems()) {
-            orderProductUOF.add(product.getID(), product.getCount());
-        }
+        ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+        ButtonType no = new ButtonType("No!", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(
+                Alert.AlertType.WARNING,
+                "Did you verify if order is correct?", no, yes);
+        alert.setHeaderText("Verification"+ selectedTable.getText().split("\\.")[1]);
+        alert.setTitle("Order Confirmation");
 
-        orderProductUOF.commit();
-        backPress();
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.orElse(no) == yes) {
+            for (Product product : productView.getItems()) {
+                orderProductUOF.add(product.getID(), product.getCount());
+            }
+
+            orderProductUOF.commit();
+            backPress();
+        }
     }
 
     @FXML

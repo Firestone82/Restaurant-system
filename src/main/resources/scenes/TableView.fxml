@@ -21,15 +21,15 @@
    </Label>
    <TableView fx:id="tableView" layoutX="14.0" layoutY="51.0" prefHeight="537.0" prefWidth="267.0">
      <columns>
-       <TableColumn fx:id="tableName" prefWidth="157.0" text="Table" />
-       <TableColumn fx:id="tableState" minWidth="0.0" prefWidth="87.0" text="Active" />
+       <TableColumn fx:id="tableName" prefWidth="157.0" resizable="false" text="Table" />
+       <TableColumn id="rowCenter" fx:id="tableState" minWidth="0.0" prefWidth="87.0" resizable="false" text="Reserved" />
      </columns>
    </TableView>
    <TableView fx:id="productView" layoutX="300.0" layoutY="109.0" prefHeight="479.0" prefWidth="586.0">
       <columns>
          <TableColumn fx:id="productName" prefWidth="412.0" text="Product" />
-         <TableColumn fx:id="productCount" minWidth="31.0" prefWidth="66.0" resizable="false" text="Count" />
-         <TableColumn fx:id="productTotal" minWidth="48.0" prefWidth="85.0" resizable="false" text="Total" />
+         <TableColumn id="rowCenter" fx:id="productCount" minWidth="31.0" prefWidth="66.0" resizable="false" text="Count" />
+         <TableColumn id="rowRight" fx:id="productTotal" minWidth="48.0" prefWidth="85.0" resizable="false" text="Total" />
       </columns>
    </TableView>
    <Label fx:id="selectedTable" layoutX="300.0" layoutY="34.0" prefHeight="26.0" prefWidth="313.0">
@@ -43,7 +43,7 @@
       <children>
          <Button fx:id="addTableButton" mnemonicParsing="false" onAction="#addTablePress" prefHeight="33.0" prefWidth="145.0" styleClass="greenButton" text="Add Table" />
          <Button fx:id="deleteTableButton" mnemonicParsing="false" onAction="#deleteTablePress" prefHeight="33.0" prefWidth="145.0" styleClass="redButton" text="Delete Table" />
-          <Button fx:id="addButton" mnemonicParsing="false" onAction="#addPress" prefHeight="33.0" prefWidth="145.0" styleClass="greenButton" text="Add Product" />
+          <Button fx:id="orderButton" mnemonicParsing="false" onAction="#orderPress" prefHeight="33.0" prefWidth="145.0" styleClass="orangeButton" text="Order" />
           <Button fx:id="payButton" mnemonicParsing="false" onAction="#payPress" prefHeight="33.0" prefWidth="145.0" styleClass="orangeButton" text="Payment" />
       </children>
    </HBox>

@@ -10,6 +10,7 @@ import presentationLayer.controller.AbstractController;
 import presentationLayer.enums.SceneType;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ProductViewController extends AbstractController {
     private @FXML Label userName;
@@ -70,7 +71,18 @@ public class ProductViewController extends AbstractController {
         int selectedCount = productAddCount.getValue();
 
         if (selectedProduct.getCount() - selectedCount < 0) {
-            app.getProductService().setProductStock(selectedProduct.getID(), 0);
+            ButtonType yes = new ButtonType("Override", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(
+                    Alert.AlertType.ERROR,
+                    "Trying to remove more stock then there is? \n Number will be set to 0.", no, yes);
+            alert.setHeaderText("Negative stock number!");
+            alert.setTitle("Override confirmation");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.orElse(no) == yes) {
+                app.getProductService().setProductStock(selectedProduct.getID(), 0);
+            }
         } else {
             app.getProductService().removeProductStock(selectedProduct.getID(), selectedCount);
         }

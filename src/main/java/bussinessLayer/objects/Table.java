@@ -21,6 +21,6 @@ public class Table {
     }
 
     public String getState() {
-        return active.get() ? "Active" : "Inactive";
+        return active.get() ? "Yes" : "---";
     }
 }
