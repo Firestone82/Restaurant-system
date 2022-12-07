@@ -83,6 +83,7 @@ public class TableOrdersController extends AbstractController {
             alert.setHeaderText("Not enough products");
             alert.setContentText("There are only " + selectedProduct.getCount() + "x " + selectedProduct.getName() + " left in stock");
             alert.showAndWait();
+
             return;
         } else {
             selectedProduct.setCount(selectedProduct.getCount() - selectedCount);
@@ -125,8 +126,7 @@ public class TableOrdersController extends AbstractController {
 
         ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
         ButtonType no = new ButtonType("No!", ButtonBar.ButtonData.CANCEL_CLOSE);
-        Alert alert = new Alert(
-                Alert.AlertType.WARNING,
+        Alert alert = new Alert(Alert.AlertType.WARNING,
                 "Did you verify if order is correct?", no, yes);
         alert.setHeaderText("Verification"+ selectedTable.getText().split("\\.")[1]);
         alert.setTitle("Order Confirmation");

@@ -7,6 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class EmployeeGateway {
+
+    /**
+     * Return ResultSet from database by employee ID
+     * @param employeeID employeID
+     * @return resultSet
+     */
     public static ResultSet getEmployeeByID(Integer employeeID) {
         String sql = "SELECT * FROM Employee WHERE employeeID = ?";
 

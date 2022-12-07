@@ -5,6 +5,12 @@ import bussinessLayer.objects.Product;
 import java.sql.ResultSet;
 
 public class ProductMapper {
+
+    /**
+     * Construct object by result set
+     * @param rs ResultSet
+     * @return Table Object
+     */
     public static Product map(ResultSet rs) {
         try {
             return new Product(

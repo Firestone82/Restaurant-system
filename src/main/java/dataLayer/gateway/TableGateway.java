@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 
 public class TableGateway {
 
+    /**
+     * Insert empty table to database
+     */
     public static void insertTable() {
         String sql = "INSERT INTO [Table] (reserved, occupied) VALUES (0,0)";
 
@@ -20,6 +23,11 @@ public class TableGateway {
         }
     }
 
+    /**
+     * Assign order to table
+     * @param tableID tableID
+     * @param orderID orderID
+     */
     public static void assignTableOrder(Integer tableID, Integer orderID) {
         String sql = "INSERT INTO TableOrders (tableID, orderID) VALUES (?, ?)";
 
@@ -34,6 +42,10 @@ public class TableGateway {
         }
     }
 
+    /**
+     * Remove table by table ID
+     * @param tableID tableID
+     */
     public static void removeByTableID(int tableID) {
         String sql = "DELETE FROM [Table] WHERE tableID = ?";
 
@@ -47,6 +59,11 @@ public class TableGateway {
         }
     }
 
+    /**
+     * Get table by ID
+     * @param tableID tableiD
+     * @return resultSet
+     */
     public static ResultSet getTableByID(int tableID) {
         String sql = "SELECT * FROM [Table] WHERE tableID = ?";
 
@@ -63,6 +80,10 @@ public class TableGateway {
         return null;
     }
 
+    /**
+     * Get all tables from database
+     * @return resultSet
+     */
     public static ResultSet getAllTables() {
         String sql = "SELECT * FROM [Table]";
 

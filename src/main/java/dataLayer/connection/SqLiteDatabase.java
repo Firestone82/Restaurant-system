@@ -6,10 +6,9 @@ import java.sql.DriverManager;
 
 public class SqLiteDatabase implements IDatabase {
     private static String connectionString;
-    private static File file;
 
     public SqLiteDatabase(String path) {
-        this.file = new File("src/main/resources"+ path);
+        File file = new File("src/main/resources" + path);
 
         if (!file.exists()) {
             try {
@@ -19,7 +18,7 @@ public class SqLiteDatabase implements IDatabase {
             }
         }
 
-        this.connectionString = "jdbc:sqlite:" + file.getPath();
+        connectionString = "jdbc:sqlite:" + file.getPath();
     }
 
     public static Connection getConnection() {

@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderService {
+    /**
+     * Insert an order into database and return its ID
+     * @param tableID table ID
+     * @param employeeID employee ID
+     * @return orderID
+     */
     public Order insertOrder(Integer tableID, Integer employeeID) {
         try (ResultSet rs = OrderGateway.insertTableOrder(employeeID, tableID)) {
 
@@ -30,10 +36,19 @@ public class OrderService {
         return null;
     }
 
+    /**
+     * Assign and productID and count to specific orderID
+     * @return
+     */
     public void insertOrderProduct(Integer orderID, Integer productID, Integer quantity) {
         OrderGateway.assignOrderProduct(orderID, productID, quantity);
     }
 
+    /**
+     * Get all orders from specific tableID
+     * @param tableID
+     * @return List of orders
+     */
     public List<Order> getTableOrders(Integer tableID) {
         List<Order> orders = new ArrayList<>();
 

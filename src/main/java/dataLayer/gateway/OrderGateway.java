@@ -9,6 +9,11 @@ import java.sql.Statement;
 
 public class OrderGateway {
 
+    /**
+     * Insert tableOrder
+     * @param employeeID employeID
+     * @return resultSet
+     */
     public static ResultSet insertTableOrder(Integer employeeID, Integer tableID) {
         String sql = "INSERT INTO [Order] (created, employeeID) VALUES (CURRENT_TIMESTAMP, ?)";
 
@@ -27,6 +32,14 @@ public class OrderGateway {
         return null;
     }
 
+
+    /**
+     * Assign product and count by orderID
+     * @param orderID orderID
+     * @param productID productID
+     * @param count Count
+     * @return resultSet
+     */
     public static void assignOrderProduct(int orderID, int productID, Integer count) {
         String sql = "INSERT INTO OrderProducts (orderID, productID, count) VALUES (?, ?, ?)";
 
@@ -42,6 +55,11 @@ public class OrderGateway {
         }
     }
 
+    /**
+     * Get order by orderID
+     * @param orderID orderID
+     * @return resultSet
+     */
     public static ResultSet getOrderByOrderID(Integer orderID) {
         String sql = "SELECT * FROM [Order] WHERE orderID = ?";
 
@@ -58,6 +76,11 @@ public class OrderGateway {
         return null;
     }
 
+    /**
+     * Get order by tableID
+     * @param tableID tableID
+     * @return resultSet
+     */
     public static ResultSet getOrdersByTableID(Integer tableID) {
         String sql = "" +
                 "SELECT tableID, t.orderID, created, employeeID, paymentID " +

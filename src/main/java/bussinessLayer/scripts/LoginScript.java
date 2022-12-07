@@ -6,6 +6,13 @@ import dataLayer.gateway.EmployeeGateway;
 import javafx.util.Pair;
 
 public class LoginScript {
+
+    /**
+     * Process login by database
+     * @param employeeID employeeID
+     * @param password password
+     * @return if login was successful and employee
+     */
     public Pair<Boolean, Employee> processLogin(String employeeID, String password) {
         int id = -1;
 

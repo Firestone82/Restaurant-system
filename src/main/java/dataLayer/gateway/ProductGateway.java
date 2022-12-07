@@ -7,14 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class ProductGateway {
-    public static ResultSet insertProduct() {
-        return null;
-    }
 
-    public static void removeProductByID() {
-
-    }
-
+    /**
+     * Get all products
+     * @return resultSet
+     */
     public static ResultSet getAllProducts() {
         String sql = "SELECT * FROM Product ORDER BY name";
 
@@ -30,22 +27,11 @@ public class ProductGateway {
         return null;
     }
 
-    public static ResultSet getProductByID(int productID) {
-        String sql = "SELECT * FROM Product WHERE productID = ?";
-
-        try {
-            Connection connection = SQLDatabase.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            statement.setInt(1, productID);
-            return statement.executeQuery();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
+    /**
+     * Insert productID and stock count
+     * @param productID productID
+     * @param count count
+     */
     public static void increaseProductIDStock(int productID, int count) {
         String sql = "UPDATE Product SET count = count + ? WHERE productID = ?";
 
@@ -60,6 +46,11 @@ public class ProductGateway {
         }
     }
 
+    /**
+     * Decrease productID stock count
+     * @param productID productID
+     * @param count count
+     */
     public static void decreaseProductIDStock(int productID, int count) {
         String sql = "UPDATE Product SET count = count - ? WHERE productID = ?";
 
@@ -74,6 +65,11 @@ public class ProductGateway {
         }
     }
 
+    /**
+     * Set productID stock count
+     * @param productID productID
+     * @param count count
+     */
     public static void setProductIDStock(int productID, int count) {
         String sql = "UPDATE Product SET count = ? WHERE productID = ?";
 
@@ -88,6 +84,11 @@ public class ProductGateway {
         }
     }
 
+    /**
+     * Return product by tableID
+     * @param tableID tableiD
+     * @return resultSet
+     */
     public static ResultSet getProductsByTableID(int tableID) {
         String sql = "" +
                 "SELECT p.productID, type, name, SUM(op.count) AS count, SUM(price) AS price " +
@@ -110,6 +111,11 @@ public class ProductGateway {
         return null;
     }
 
+    /**
+     * Return product by order id
+     * @param orderID orderiD
+     * @return resultSet
+     */
     public static ResultSet getProductsByOrderID(int orderID) {
         String sql = "" +
                 "SELECT p.productID, type, name, SUM(op.count) AS count, SUM(price) AS price " +

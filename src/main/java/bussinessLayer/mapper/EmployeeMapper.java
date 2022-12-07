@@ -5,6 +5,12 @@ import bussinessLayer.objects.Employee;
 import java.sql.ResultSet;
 
 public class EmployeeMapper {
+
+    /**
+     * Construct object by result set
+     * @param rs ResultSet
+     * @return Table Object
+     */
     public static Employee map(ResultSet rs) {
         try {
             if (rs.next()) {

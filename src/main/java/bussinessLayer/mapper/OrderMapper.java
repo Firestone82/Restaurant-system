@@ -6,6 +6,12 @@ import bussinessLayer.objects.Table;
 import java.sql.ResultSet;
 
 public class OrderMapper {
+
+    /**
+     * Construct object by result set
+     * @param rs ResultSet
+     * @return Table Object
+     */
     public static Order map(ResultSet rs) {
         try {
             return new Order(
