@@ -10,8 +10,10 @@ import presentationLayer.controller.AbstractController;
 import presentationLayer.enums.SceneType;
 
 public class LoginController extends AbstractController {
-    @FXML TextField employeeID;
-    @FXML TextField employeePassword;
+    @FXML
+    TextField employeeID;
+    @FXML
+    TextField employeePassword;
 
     @Override
     public void initComponents() {

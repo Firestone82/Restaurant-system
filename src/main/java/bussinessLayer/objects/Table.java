@@ -7,12 +7,12 @@ public class Table {
     private final SimpleIntegerProperty tableID;
     private final SimpleBooleanProperty active;
 
-    public Table(Integer tableID, boolean active) {
+    public Table(int tableID, boolean active) {
         this.tableID = new SimpleIntegerProperty(tableID);
         this.active = new SimpleBooleanProperty(active);
     }
 
-    public Integer getTableID() {
+    public int getTableID() {
         return tableID.get();
     }
 

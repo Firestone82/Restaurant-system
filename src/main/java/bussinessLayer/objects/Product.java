@@ -16,7 +16,7 @@ public class Product {
     private final SimpleIntegerProperty count;
     private final SimpleDoubleProperty price;
 
-    public Product(Integer productID, Type productType, String productName, Integer count, Double price) {
+    public Product(int productID, Type productType, String productName, int count, double price) {
         this.productID = new SimpleIntegerProperty(productID);
         this.name = new SimpleStringProperty(productName);
         this.count = new SimpleIntegerProperty(count);
@@ -28,7 +28,7 @@ public class Product {
         this.productID = new SimpleIntegerProperty(cloneProduct.getID());
         this.name = new SimpleStringProperty(cloneProduct.getName());
         this.count = new SimpleIntegerProperty(cloneProduct.getCount());
-        this.price = new SimpleDoubleProperty(cloneProduct.getTotal());
+        this.price = new SimpleDoubleProperty(cloneProduct.getPrice());
         this.type = cloneProduct.getType();
     }
 
@@ -44,15 +44,19 @@ public class Product {
         return name.get();
     }
 
-    public Integer getCount() {
+    public int getCount() {
         return count.get();
     }
 
-    public void setCount(Integer count) {
+    public double getPrice() {
+        return price.get();
+    }
+
+    public void setCount(int count) {
         this.count.set(count);
     }
 
-    public Double getTotal() {
+    public double getTotal() {
         return price.get() * count.get();
     }
 }

@@ -3,34 +3,40 @@ package presentationLayer.controller.list;
 import bussinessLayer.objects.Employee;
 import bussinessLayer.objects.Product;
 import bussinessLayer.objects.Table;
-import bussinessLayer.services.OrderService;
-import bussinessLayer.services.ProductService;
 import bussinessLayer.services.TableService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
-import presentationLayer.App;
 import presentationLayer.controller.AbstractController;
 import presentationLayer.enums.SceneType;
 
 import java.util.Optional;
 
 public class TableViewController extends AbstractController {
-    @FXML Label selectedTable;
-    @FXML Label userName;
+    @FXML
+    Label selectedTable;
+    @FXML
+    Label userName;
 
-    @FXML Button managerButton;
+    @FXML
+    Button managerButton;
 
-    @FXML TableView<Table> tableView;
-    @FXML TableColumn<Table, String> tableName;
-    @FXML TableColumn<Table, Boolean> tableState;
+    @FXML
+    TableView<Table> tableView;
+    @FXML
+    TableColumn<Table, String> tableName;
+    @FXML
+    TableColumn<Table, Boolean> tableState;
 
-    @FXML TableView<Product> productView;
-    @FXML TableColumn<Product, String> productName;
-    @FXML TableColumn<Product, Integer> productCount;
-    @FXML TableColumn<Product, Double> productTotal;
+    @FXML
+    TableView<Product> productView;
+    @FXML
+    TableColumn<Product, String> productName;
+    @FXML
+    TableColumn<Product, Integer> productCount;
+    @FXML
+    TableColumn<Product, Double> productTotal;
 
     public void initComponents() {
         this.tableName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -71,7 +77,7 @@ public class TableViewController extends AbstractController {
         tableView.setItems(FXCollections.observableArrayList(app.getTableService().getAllTables()));
     }
 
-    public void load(Integer tableID) {
+    public void load(int tableID) {
         load();
         selectedTable.setText("Selected table n." + tableID);
         productView.setItems(FXCollections.observableArrayList(app.getProductService().getProductsFromTable(tableID)));
@@ -97,7 +103,7 @@ public class TableViewController extends AbstractController {
 
     @FXML
     public void managerPress() {
-        if (true || app.getEmployee().getPosition() == Employee.Type.MANAGER || app.getEmployee().getPosition() == Employee.Type.MAJITEL) {
+        if (true) {
             app.getController().changeScene(SceneType.EDIT);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -128,7 +134,7 @@ public class TableViewController extends AbstractController {
         Alert alert = new Alert(
                 Alert.AlertType.WARNING,
                 "Opravdu chceš smazat tento stůl?", no, yes);
-        alert.setHeaderText("Table removal n."+ selectedTable.getText().split("\\.")[1]);
+        alert.setHeaderText("Table removal n." + selectedTable.getText().split("\\.")[1]);
         alert.setTitle("Table Removal confirmation.");
 
         Optional<ButtonType> result = alert.showAndWait();

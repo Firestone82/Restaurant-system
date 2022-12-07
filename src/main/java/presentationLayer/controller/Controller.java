@@ -1,6 +1,5 @@
 package presentationLayer.controller;
 
-import bussinessLayer.objects.Employee;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -52,7 +51,7 @@ public class Controller {
         }
     }
 
-    public void changeScene(SceneType type, String ...values) {
+    public void changeScene(SceneType type, String... values) {
         try {
             switch (type) {
                 case LOGIN -> {
@@ -60,14 +59,14 @@ public class Controller {
                     loginController.loadValues();
                 }
 
-                case TABLEVIEW ->  {
+                case TABLEVIEW -> {
                     primaryStage.setScene(tableViewController.getScene());
                     tableViewController.loadValues();
                 }
 
                 case ADD -> {
                     primaryStage.setScene(tableOrdersController.getScene());
-                    tableOrdersController.loadValues("Table n."+ values[0]);
+                    tableOrdersController.loadValues("Table n." + values[0]);
                 }
 
                 case EDIT -> {
@@ -77,7 +76,7 @@ public class Controller {
 
                 case PAY -> {
                     primaryStage.setScene(orderPaymentController.getScene());
-                    orderPaymentController.loadValues("Table n."+ values[0]);
+                    orderPaymentController.loadValues("Table n." + values[0]);
                 }
             }
 

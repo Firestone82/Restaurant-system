@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderService {
+
     /**
      * Insert an order into database and return its ID
      * @param tableID table ID
      * @param employeeID employee ID
      * @return orderID
      */
-    public Order insertOrder(Integer tableID, Integer employeeID) {
+    public Order insertOrder(int tableID, int employeeID) {
         try (ResultSet rs = OrderGateway.insertTableOrder(employeeID, tableID)) {
 
             if (rs.next()) {

@@ -1,7 +1,6 @@
 package bussinessLayer.mapper;
 
 import bussinessLayer.objects.Order;
-import bussinessLayer.objects.Table;
 
 import java.sql.ResultSet;
 

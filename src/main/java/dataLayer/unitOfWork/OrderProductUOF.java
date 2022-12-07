@@ -1,6 +1,6 @@
 package dataLayer.unitOfWork;
 
-import dataLayer.connection.SQLDatabase;
+import dataLayer.connection.IDatabase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,38 +17,76 @@ public class OrderProductUOF {
         this.orderID = orderID;
     }
 
+    public void update(int productID, int count) {
+        update.add(productID + "@" + count);
+    }
+
+    public void delete(int productID) {
+        delete.add(productID +"");
+    }
+
     public void add(int productID, int count) {
-        insert.add(productID +"@"+ count);
+        insert.add(productID + "@" + count);
     }
 
     public void commit() {
-        String insertSQL = "INSERT INTO OrderProducts (orderID, productID, count) VALUES (?, ?, ?)";
-        String updateSQL = "UPDATE Product SET count = count - ? WHERE productID = ?";
+        try (Connection connection = IDatabase.getConnection()) {
+            if (!insert.isEmpty()) {
+                String insertOrderSQL = "INSERT INTO OrderProducts (orderID, productID, count) VALUES (?, ?, ?)";
+                try (PreparedStatement statement = connection.prepareStatement(insertOrderSQL)) {
+                    for (String in : insert) {
+                        String[] inArgs = in.split("@");
 
-        try (Connection connection = SQLDatabase.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(insertSQL)) {
-                for (String in : insert) {
-                    String[] inArgs = in.split("@");
+                        statement.setInt(1, orderID);
+                        statement.setInt(2, Integer.parseInt(inArgs[0]));
+                        statement.setInt(3, Integer.parseInt(inArgs[1]));
+                        statement.addBatch();
+                    }
 
-                    statement.setInt(1, orderID);
-                    statement.setInt(2, Integer.parseInt(inArgs[0]));
-                    statement.setInt(3, Integer.parseInt(inArgs[1]));
-                    statement.addBatch();
+                    statement.executeBatch();
                 }
 
-                statement.executeBatch();
+                String updateProductSQL = "UPDATE Product SET count = count - ? WHERE productID = ?";
+                try (PreparedStatement statement = connection.prepareStatement(updateProductSQL)) {
+                    for (String in : insert) {
+                        String[] inArgs = in.split("@");
+
+                        statement.setInt(1, Integer.parseInt(inArgs[1]));
+                        statement.setInt(2, Integer.parseInt(inArgs[0]));
+                        statement.addBatch();
+                    }
+
+                    statement.executeBatch();
+                }
             }
 
-            try (PreparedStatement statement = connection.prepareStatement(updateSQL)) {
-                for (String in : insert) {
-                    String[] inArgs = in.split("@");
+            if (!update.isEmpty()) {
+                String updateOrderSQL = "UPDATE OrderProducts SET count = ? WHERE orderID = ? AND productID = ?";
+                try (PreparedStatement statement = connection.prepareStatement(updateOrderSQL)) {
+                    for (String in : update) {
+                        String[] inArgs = in.split("@");
 
-                    statement.setInt(1, Integer.parseInt(inArgs[1]));
-                    statement.setInt(2, Integer.parseInt(inArgs[0]));
-                    statement.addBatch();
+                        statement.setInt(1, Integer.parseInt(inArgs[1]));
+                        statement.setInt(2, orderID);
+                        statement.setInt(3, Integer.parseInt(inArgs[0]));
+                        statement.addBatch();
+                    }
+
+                    statement.executeBatch();
                 }
+            }
 
-                statement.executeBatch();
+            if (!delete.isEmpty()) {
+                String deleteOrderSQL = "DELETE FROM OrderProducts WHERE orderID = ? AND productID = ?";
+                try (PreparedStatement statement = connection.prepareStatement(deleteOrderSQL)) {
+                    for (String in : delete) {
+                        statement.setInt(1, orderID);
+                        statement.setInt(2, Integer.parseInt(in));
+                        statement.addBatch();
+                    }
+
+                    statement.executeBatch();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -9,14 +9,14 @@ public class Order {
     private final SimpleIntegerProperty employeeID;
     private final SimpleIntegerProperty paymentID;
 
-    public Order(Integer orderID, String created, Integer employeeID, Integer paymentID) {
+    public Order(int orderID, String created, int employeeID, int paymentID) {
         this.orderID = new SimpleIntegerProperty(orderID);
         this.created = new SimpleStringProperty(created);
         this.employeeID = new SimpleIntegerProperty(employeeID);
         this.paymentID = new SimpleIntegerProperty(paymentID);
     }
 
-    public Integer getID() {
+    public int getID() {
         return orderID.get();
     }
 

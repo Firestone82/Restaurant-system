@@ -32,7 +32,7 @@ public class TableService {
     public List<Table> getAllTables() {
         List<Table> tables = new ArrayList<>();
 
-        try (ResultSet resultSet = TableGateway.getAllTables();) {
+        try (ResultSet resultSet = TableGateway.getAllTables()) {
             while (resultSet.next()) {
                 tables.add(TableMapper.map(resultSet));
             }

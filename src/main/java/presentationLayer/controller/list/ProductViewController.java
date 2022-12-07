@@ -9,7 +9,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import presentationLayer.controller.AbstractController;
 import presentationLayer.enums.SceneType;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class ProductViewController extends AbstractController {
@@ -28,7 +27,7 @@ public class ProductViewController extends AbstractController {
         this.productType.setCellValueFactory(new PropertyValueFactory<>("type"));
         this.productCount.setCellValueFactory(new PropertyValueFactory<>("count"));
 
-        productAddCount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,500,1));
+        productAddCount.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 500, 1));
         productAddName.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Product item, boolean empty) {

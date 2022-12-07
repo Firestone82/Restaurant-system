@@ -13,7 +13,7 @@ public class EmployeeGateway {
      * @param employeeID employeID
      * @return resultSet
      */
-    public static ResultSet getEmployeeByID(Integer employeeID) {
+    public static ResultSet getEmployeeByID(int employeeID) {
         String sql = "SELECT * FROM Employee WHERE employeeID = ?";
 
         try {

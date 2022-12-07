@@ -1,7 +1,9 @@
 package presentationLayer.controller.list;
 
+import bussinessLayer.objects.Payment;
 import bussinessLayer.objects.Product;
-import bussinessLayer.services.ProductService;
+import bussinessLayer.services.TableService;
+import dataLayer.unitOfWork.OrderProductUOF;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -41,9 +43,9 @@ public class OrderPaymentController extends AbstractController {
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty()) {
                     if (event.getClickCount() == 3 || event.isShiftDown()) {
-                        transfare(tableOrderView, tablePayView, row.getItem(),-1);
+                        transfare(tableOrderView, tablePayView, row.getItem(), -1);
                     } else if (event.getClickCount() == 1) {
-                        transfare(tableOrderView, tablePayView, row.getItem(),1);
+                        transfare(tableOrderView, tablePayView, row.getItem(), 1);
                     }
                 }
             });
@@ -57,9 +59,9 @@ public class OrderPaymentController extends AbstractController {
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty()) {
                     if (event.getClickCount() == 3 || event.isShiftDown()) {
-                        transfare(tablePayView, tableOrderView, row.getItem(),-1);
+                        transfare(tablePayView, tableOrderView, row.getItem(), -1);
                     } else if (event.getClickCount() == 1) {
-                        transfare(tablePayView, tableOrderView, row.getItem(),1);
+                        transfare(tablePayView, tableOrderView, row.getItem(), 1);
                     }
                 }
             });
@@ -67,7 +69,7 @@ public class OrderPaymentController extends AbstractController {
             return row;
         });
     }
-    
+
     public void transfare(TableView<Product> from, TableView<Product> to, Product product, int count) {
         Product payProduct = to.getItems().stream().filter(p -> p.getID() == product.getID()).findFirst().orElse(null);
 
@@ -114,21 +116,46 @@ public class OrderPaymentController extends AbstractController {
 
     @FXML
     public void payPress() {
-        // Insert data to database
-        // Create text file with bill list
+        double total = 0D;
+
+        for (Product product : tablePayView.getItems()) {
+            total += product.getTotal();
+        }
+
+        ButtonType card = new ButtonType("Card", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cash = new ButtonType("Cash", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "Choose the type of payment customer wants.", card, cash, cancel);
+        alert.setHeaderText("Payment type");
+        alert.setTitle("Override confirmation");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.orElse(cash) == card) {
+            app.getPaymentService().insertPayment(Payment.Type.CARD, total, app.getEmployee().getEmployeeID());
+        } else {
+            app.getPaymentService().insertPayment(Payment.Type.CASH, total, app.getEmployee().getEmployeeID());
+        }
+
+        tablePayView.getItems().clear();
+
+        if (tableOrderView.getItems().size() == 0) {
+            app.getTableService().removeTable(Integer.parseInt(selectedTable.getText().split("\\.")[1]));
+        }
     }
 
     @FXML
     public void selectPress() {
         for (Product product : List.copyOf(tableOrderView.getItems())) {
-            transfare(tableOrderView, tablePayView, product,-1);
+            transfare(tableOrderView, tablePayView, product, -1);
         }
     }
 
     @FXML
     public void unselectPress() {
         for (Product product : List.copyOf(tablePayView.getItems())) {
-            transfare(tablePayView, tableOrderView, product,-1);
+            transfare(tablePayView, tableOrderView, product, -1);
         }
     }
 

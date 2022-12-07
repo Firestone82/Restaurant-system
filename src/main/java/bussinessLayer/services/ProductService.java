@@ -10,12 +10,26 @@ import java.util.List;
 
 public class ProductService {
 
+    public static List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+
+        try (ResultSet resultSet = ProductGateway.getAllProducts()) {
+            while (resultSet.next()) {
+                products.add(ProductMapper.map(resultSet));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return products;
+    }
+
     /**
      * Get all products from specific tableID
      * @param tableID table ID
      * @return list of products
      */
-    public List<Product> getProductsFromTable(Integer tableID) {
+    public List<Product> getProductsFromTable(int tableID) {
         List<Product> products = new ArrayList<>();
 
         try (ResultSet resultSet = ProductGateway.getProductsByTableID(tableID)) {
@@ -60,28 +74,10 @@ public class ProductService {
      * Return products from orderID
      * @return list of products
      */
-    public List<Product> getProductsFromOrder(Integer orderID) {
+    public List<Product> getProductsFromOrder(int orderID) {
         List<Product> products = new ArrayList<>();
 
         try (ResultSet resultSet = ProductGateway.getProductsByOrderID(orderID)) {
-            while (resultSet.next()) {
-                products.add(ProductMapper.map(resultSet));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return products;
-    }
-
-    /**
-     * Return list of products from database
-     * @return list of product
-     */
-    public static List<Product> getAllProducts() {
-        List<Product> products = new ArrayList<>();
-
-        try (ResultSet resultSet = ProductGateway.getAllProducts()) {
             while (resultSet.next()) {
                 products.add(ProductMapper.map(resultSet));
             }
